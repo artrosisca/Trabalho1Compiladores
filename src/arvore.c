@@ -30,7 +30,7 @@ Contexto *novoContexto(char first[], char second[], TIPO_CONTEXTO type)
     return tmp;
 }
 
-Plano *novoPlanoo(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *next)
+Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *next)
 {
     Plano *tmp = (Plano *)malloc(sizeof(Plano));
     if (!tmp)
@@ -200,7 +200,7 @@ int main(int argc, char **argv)
 {
     if (argc < 2)
     {
-        printf("Usado ./cc64a <FILENAME>");
+        printf("Usagem: ./cc64a <FILENAME>");
         exit(EXIT_FAILURE);
     }
     yyin = fopen(argv[1], "r");
