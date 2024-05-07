@@ -13,10 +13,10 @@
 %token<s> NOME NOME_AGENTE
 %token CRENCAS OBJETIVOS PLANOS E OU NAO PORCENTAGEM ABRE_CHAVE FECHA_CHAVE ABRE_PARENTESES FECHA_PARENTESES PONTO_VIRGULA
 
-%type<s> NOME_AGENTE list_element_name nome_plano condicao
-%type<l> lista_simples CRENCAS OBJETIVOS acoes
+%type<s> nome_agente list_element_name nome_plano condicao
+%type<l> lista_simples crencas objetivos acoes
 %type<e> contexto
-%type<p> PLANOS plano_set
+%type<p> planos plano_set
 %type<a> lista_agente
 
 %start programa
@@ -25,16 +25,16 @@
 programa: lista_agente { eval($1); }
 
 lista_agente: { $$ = NULL; }
-    | NOME_AGENTE CRENCAS OBJETIVOS PLANOS PORCENTAGEM lista_agente { $$ = novo_agente($1, $2, $3, $4, $6); }
+    | nome_agente crencas objetivos planos PORCENTAGEM lista_agente { $$ = novo_agente($1, $2, $3, $4, $6); }
     ;
 
-CRENCAS: CRENCAS ABRE_CHAVE lista_simples FECHA_CHAVE { $$ = $3; }
+crencas: CRENCAS ABRE_CHAVE lista_simples FECHA_CHAVE { $$ = $3; }
     ;
 
-OBJETIVOS: OBJETIVOS ABRE_CHAVE lista_simples FECHA_CHAVE { $$ = $3; }
+objetivos: OBJETIVOS ABRE_CHAVE lista_simples FECHA_CHAVE { $$ = $3; }
     ;
 
-PLANOS: PLANOS ABRE_CHAVE plano_set FECHA_CHAVE { $$ = $3; }
+planos: PLANOS ABRE_CHAVE plano_set FECHA_CHAVE { $$ = $3; }
     ;
 
 plano_set: { $$ = NULL; }
@@ -60,7 +60,7 @@ lista_simples: { $$ = NULL; }
 nome_plano: NOME
     ;
     
-NOME_AGENTE: NOME_AGENTE
+nome_agente: NOME_AGENTE
     ;
 
 list_element_name: NOME
