@@ -160,7 +160,7 @@ void *liberaArvore(Agente *agente)
         return NULL;
     agente->crencas = liberaLista(agente->crencas);
     agente->objetivos = liberaLista(agente->objetivos);
-    agente->planos = liberaPlanoos(agente->planos);
+    agente->planos = liberaPlanos(agente->planos);
     return NULL;
 }
 
@@ -180,7 +180,7 @@ void *liberaPlanos(Plano *planos)
         return NULL;
     if (planos->next)
         planos->next = liberaPlanos(planos->next);
-    planos->acoes = liberaPlanos(planos->acoes);
+    planos->acoes = liberaLista(planos->acoes);
     free(planos->contexto);
     free(planos);
     return NULL;
