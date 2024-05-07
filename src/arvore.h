@@ -18,10 +18,10 @@ extern FILE *yyin;
 
 typedef enum
 {
-    E,
-    OU,
-    NAO,
-    NOME,
+    _E,
+    _OU,
+    _NAO,
+    _NOME,
 } TIPO_CONTEXTO;
 
 typedef struct Folha
@@ -41,7 +41,7 @@ typedef struct Plano
 {
     char nome_plano[TAMANHO_NOME];
     char condicao_nome[TAMANHO_NOME];
-    Contexto *Contexto;
+    Contexto *contexto;
     Folha *acoes;
     struct Plano *next;
 } Plano;

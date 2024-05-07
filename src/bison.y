@@ -44,10 +44,10 @@ plano_set: { $$ = NULL; }
 condicao: NOME PONTO_VIRGULA
     ;
 
-contexto: NOME E NOME PONTO_VIRGULA { $$ = novo_contexto($1, $3, E); }
-    | NOME OU NOME PONTO_VIRGULA { $$ = novo_contexto($1, $3, OU); }
-    | NAO NOME PONTO_VIRGULA { $$ = novo_contexto($2, NULL, NAO); }
-    | NOME { $$ = novo_contexto($1, NULL, NOME); }
+contexto: NOME E NOME PONTO_VIRGULA { $$ = novo_contexto($1, $3, _E); }
+    | NOME OU NOME PONTO_VIRGULA { $$ = novo_contexto($1, $3, _OU); }
+    | NAO NOME PONTO_VIRGULA { $$ = novo_contexto($2, NULL, _NAO); }
+    | NOME { $$ = novo_contexto($1, NULL, _NOME); }
     ;
 
 acoes: ABRE_CHAVE lista_simples FECHA_CHAVE { $$ = $2; }

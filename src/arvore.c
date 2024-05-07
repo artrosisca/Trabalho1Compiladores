@@ -13,7 +13,7 @@ Folha *novaFolha(char nome[], Folha *next)
     return tmp;
 }
 
-Contexto *novoContexto(char first[], char second[], CONTEXTP_TIPO type)
+Contexto *novoContexto(char first[], char second[], TIPO_CONTEXTO type)
 {
     Contexto *tmp = (Contexto *)malloc(sizeof(Contexto));
     if (!tmp)
@@ -82,7 +82,7 @@ void eval(Agente *agente)
     Agente *agente_temporario = agente;
     for (; agente; agente = agente->next)
     {
-        fprintf(jason_file, "%s; ", agent->nome_agente);
+        fprintf(jason_file, "%s; ", agente->nome_agente);
         agenteASL(agente);
         liberaArvore(agente);
     }
@@ -124,18 +124,18 @@ void agenteASL(Agente *agente)
 
 void printContexto(FILE *asl_file, Contexto *contexto)
 {
-    switch (Contexto->type)
+    switch (contexto->type)
     {
-    case E:
+    case _E:
         fprintf(asl_file, "%s & %s\n", contexto->first, contexto->second);
         break;
-    case OU:
+    case _OU:
         fprintf(asl_file, "%s | %s\n", contexto->first, contexto->second);
         break;
-    case NAO:
+    case _NAO:
         fprintf(asl_file, "not %s\n", contexto->first);
         break;
-    case NOME:
+    case _NOME:
         fprintf(asl_file, "%s\n", contexto->first);
         break;
     default:
@@ -159,18 +159,18 @@ void *liberaArvore(Agente *agente)
 {
     if (!agente)
         return NULL;
-    agente->crencas = freeLista(agente->crencas);
-    agente->objetivos = freeLista(agente->objetivos);
-    agente->planos = freePlanoos(agente->planos);
+    agente->crencas = liberaLista(agente->crencas);
+    agente->objetivos = liberaLista(agente->objetivos);
+    agente->planos = liberaPlanoos(agente->planos);
     return NULL;
 }
 
-void *freeLista(Folha *lista)
+void *liberaLista(Folha *lista)
 {
     if (!lista)
         return NULL;
     if (lista->next)
-        lista->next = freeLista(lista->next);
+        lista->next = liberaLista(lista->next);
     free(lista);
     return NULL;
 }
@@ -182,7 +182,7 @@ void *freePlanoos(Plano *planos)
     if (planos->next)
         planos->next = freePlanoos(planos->next);
     planos->acoes = freeLista(planos->acoes);
-    free(planos->Contexto);
+    free(planos->contexto);
     free(planos);
     return NULL;
 }

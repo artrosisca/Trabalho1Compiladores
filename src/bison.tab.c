@@ -71,7 +71,7 @@
 
 #include "../src/arvore.h"
 
-#line 75 "src/y.tab.c"
+#line 75 "src/bison.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -94,7 +94,7 @@
 #  endif
 # endif
 
-#include "y.tab.h"
+#include "bison.tab.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -1109,95 +1109,95 @@ yyreduce:
   case 2: /* programa: lista_agente  */
 #line 25 "src/bison.y"
                        { eval((yyvsp[0].a)); }
-#line 1113 "src/y.tab.c"
+#line 1113 "src/bison.tab.c"
     break;
 
   case 3: /* lista_agente: %empty  */
 #line 27 "src/bison.y"
               { (yyval.a) = NULL; }
-#line 1119 "src/y.tab.c"
+#line 1119 "src/bison.tab.c"
     break;
 
   case 4: /* lista_agente: nome_agente crencas objetivos planos PORCENTAGEM lista_agente  */
 #line 28 "src/bison.y"
                                                                     { (yyval.a) = novo_agente((yyvsp[-5].s), (yyvsp[-4].l), (yyvsp[-3].l), (yyvsp[-2].p), (yyvsp[0].a)); }
-#line 1125 "src/y.tab.c"
+#line 1125 "src/bison.tab.c"
     break;
 
   case 5: /* crencas: CRENCAS ABRE_CHAVE lista_simples FECHA_CHAVE  */
 #line 31 "src/bison.y"
                                                       { (yyval.l) = (yyvsp[-1].l); }
-#line 1131 "src/y.tab.c"
+#line 1131 "src/bison.tab.c"
     break;
 
   case 6: /* objetivos: OBJETIVOS ABRE_CHAVE lista_simples FECHA_CHAVE  */
 #line 34 "src/bison.y"
                                                           { (yyval.l) = (yyvsp[-1].l); }
-#line 1137 "src/y.tab.c"
+#line 1137 "src/bison.tab.c"
     break;
 
   case 7: /* planos: PLANOS ABRE_CHAVE plano_set FECHA_CHAVE  */
 #line 37 "src/bison.y"
                                                 { (yyval.p) = (yyvsp[-1].p); }
-#line 1143 "src/y.tab.c"
+#line 1143 "src/bison.tab.c"
     break;
 
   case 8: /* plano_set: %empty  */
 #line 40 "src/bison.y"
            { (yyval.p) = NULL; }
-#line 1149 "src/y.tab.c"
+#line 1149 "src/bison.tab.c"
     break;
 
   case 9: /* plano_set: nome_plano ABRE_PARENTESES condicao contexto acoes FECHA_PARENTESES PONTO_VIRGULA plano_set  */
 #line 41 "src/bison.y"
                                                                                                   { (yyval.p) = novo_plano((yyvsp[-7].s), (yyvsp[-5].s), (yyvsp[-4].e), (yyvsp[-3].l), (yyvsp[0].p)); }
-#line 1155 "src/y.tab.c"
+#line 1155 "src/bison.tab.c"
     break;
 
   case 11: /* contexto: NOME E NOME PONTO_VIRGULA  */
 #line 47 "src/bison.y"
-                                    { (yyval.e) = novo_contexto((yyvsp[-3].s), (yyvsp[-1].s), E); }
-#line 1161 "src/y.tab.c"
+                                    { (yyval.e) = novo_contexto((yyvsp[-3].s), (yyvsp[-1].s), _E); }
+#line 1161 "src/bison.tab.c"
     break;
 
   case 12: /* contexto: NOME OU NOME PONTO_VIRGULA  */
 #line 48 "src/bison.y"
-                                 { (yyval.e) = novo_contexto((yyvsp[-3].s), (yyvsp[-1].s), OU); }
-#line 1167 "src/y.tab.c"
+                                 { (yyval.e) = novo_contexto((yyvsp[-3].s), (yyvsp[-1].s), _OU); }
+#line 1167 "src/bison.tab.c"
     break;
 
   case 13: /* contexto: NAO NOME PONTO_VIRGULA  */
 #line 49 "src/bison.y"
-                             { (yyval.e) = novo_contexto((yyvsp[-1].s), NULL, NAO); }
-#line 1173 "src/y.tab.c"
+                             { (yyval.e) = novo_contexto((yyvsp[-1].s), NULL, _NAO); }
+#line 1173 "src/bison.tab.c"
     break;
 
   case 14: /* contexto: NOME  */
 #line 50 "src/bison.y"
-           { (yyval.e) = novo_contexto((yyvsp[0].s), NULL, NOME); }
-#line 1179 "src/y.tab.c"
+           { (yyval.e) = novo_contexto((yyvsp[0].s), NULL, _NOME); }
+#line 1179 "src/bison.tab.c"
     break;
 
   case 15: /* acoes: ABRE_CHAVE lista_simples FECHA_CHAVE  */
 #line 53 "src/bison.y"
                                             { (yyval.l) = (yyvsp[-1].l); }
-#line 1185 "src/y.tab.c"
+#line 1185 "src/bison.tab.c"
     break;
 
   case 16: /* lista_simples: %empty  */
 #line 56 "src/bison.y"
                { (yyval.l) = NULL; }
-#line 1191 "src/y.tab.c"
+#line 1191 "src/bison.tab.c"
     break;
 
   case 17: /* lista_simples: list_element_name PONTO_VIRGULA lista_simples  */
 #line 57 "src/bison.y"
                                                     { (yyval.l) = new_leaf(yyval.s, (yyvsp[0].l)); }
-#line 1197 "src/y.tab.c"
+#line 1197 "src/bison.tab.c"
     break;
 
 
-#line 1201 "src/y.tab.c"
+#line 1201 "src/bison.tab.c"
 
       default: break;
     }

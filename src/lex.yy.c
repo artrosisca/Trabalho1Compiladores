@@ -323,6 +323,9 @@ void yyfree ( void *  );
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
 /* Begin user sect3 */
+
+#define yywrap() (/*CONSTCOND*/1)
+#define YY_SKIP_YYWRAP
 typedef flex_uint8_t YY_CHAR;
 
 FILE *yyin = NULL, *yyout = NULL;
@@ -363,12 +366,12 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[53] =
     {   0,
-        0,    0,   18,   16,   15,   15,   16,    5,    9,   10,
-        8,   11,   11,   11,   11,   11,   11,   11,    6,    7,
-        1,   11,   11,   11,   11,   11,   11,    1,   11,   11,
-       11,   11,   11,   11,   11,   11,   11,   11,   11,   11,
-       11,   11,   11,    0,    0,   11,    4,    2,   11,    0,
-        3,    0
+        0,    0,   18,   16,   15,   15,   16,    1,    5,    6,
+        4,   13,   11,   13,   13,   13,   13,   13,    2,    3,
+       14,   13,   13,   10,   13,   13,   13,   14,   12,   13,
+       13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
+       13,   13,   13,    0,    0,   13,    9,    7,   13,    0,
+        8,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -476,13 +479,13 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "src/flex.l"
-#line 2 "src/flex.l"
+#line 3 "src/flex.l"
 #include "bison.tab.h"
 /*
     yytext + 1 para ignorar o "#"
 */
-#line 484 "src/lex.yy.c"
-#line 485 "src/lex.yy.c"
+#line 487 "src/lex.yy.c"
+#line 488 "src/lex.yy.c"
 
 #define INITIAL 0
 
@@ -699,9 +702,9 @@ YY_DECL
 		}
 
 	{
-#line 19 "src/flex.l"
+#line 20 "src/flex.l"
 
-#line 704 "src/lex.yy.c"
+#line 707 "src/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -760,91 +763,91 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 20 "src/flex.l"
-{ sscanf(yytext + 1, "%s", yylval.s); return AGENTE; }
+#line 21 "src/flex.l"
+{ return PORCENTAGEM; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 21 "src/flex.l"
-{ return CRENCAS; }
+#line 22 "src/flex.l"
+{ return ABRE_CHAVE; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 22 "src/flex.l"
-{ return OBJETIVOS; }
+#line 23 "src/flex.l"
+{ return FECHA_CHAVE; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 23 "src/flex.l"
-{ return PLANOS; }
+#line 24 "src/flex.l"
+{ return PONTO_VIRGULA; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 24 "src/flex.l"
-{ return PORCENTAGEM; }
+#line 25 "src/flex.l"
+{ return ABRE_PARENTESES; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 25 "src/flex.l"
-{ return ABRE_CHAVE; }
+#line 26 "src/flex.l"
+{ return FECHA_PARENTESES; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 26 "src/flex.l"
-{ return FECHA_CHAVE; }
+#line 27 "src/flex.l"
+{ return CRENCAS; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 27 "src/flex.l"
-{ return PONTO_VIRGULA; }
+#line 28 "src/flex.l"
+{ return OBJETIVOS; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 28 "src/flex.l"
-{ return ABRE_PARENTESE; }
+#line 29 "src/flex.l"
+{ return PLANOS; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 29 "src/flex.l"
-{ return FECHA_PARENTESE; }
+#line 30 "src/flex.l"
+{ return OU; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 30 "src/flex.l"
-{ sscanf(yytext, "%s", yylval.s); return NOME; }
+#line 31 "src/flex.l"
+{ return E; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 31 "src/flex.l"
-{ return OU; }
+#line 32 "src/flex.l"
+{ return NAO; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 32 "src/flex.l"
-{ return E; }
+#line 33 "src/flex.l"
+{ sscanf(yytext, "%s", yylval.s); return NOME; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 33 "src/flex.l"
-{ return NAO; }
+#line 34 "src/flex.l"
+{ sscanf(yytext + 1, "%s", yylval.s); return NOME_AGENTE; }
 	YY_BREAK
 case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
-#line 34 "src/flex.l"
+#line 35 "src/flex.l"
 
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 35 "src/flex.l"
+#line 36 "src/flex.l"
 
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 36 "src/flex.l"
+#line 37 "src/flex.l"
 ECHO;
 	YY_BREAK
-#line 847 "src/lex.yy.c"
+#line 850 "src/lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1849,6 +1852,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 36 "src/flex.l"
+#line 37 "src/flex.l"
 
 
