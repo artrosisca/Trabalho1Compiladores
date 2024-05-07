@@ -55,17 +55,17 @@ typedef struct Agente
     struct Agente *next;
 } Agente;
 
-Folha *new_leaf(char name[], Folha *next);
-Contexto *new_context(char first[], char second[], TIPO_CONTEXTO type);
-Plano *new_plan(char nome_plano[], char condicao_nome[], Contexto *Contexto, Folha *acoes, Plano *next);
-Agente *new_agent(char name[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *next);
-void eval(Agente *agents);
-void agent_to_asl(Agente *agents);
-void print_context(FILE *asl_file, Contexto *Contexto);
-void print_actions(FILE *asl_file, Folha *acoes);
-void* free_ast(Agente *Agente);
-void* free_list(Folha *list);
-void* free_plans(Plano *planos);
-void* free_agents(Agente *Agente);
+Folha *novaFolha(char name[], Folha *next);
+Contexto *novoContexto(char first[], char second[], TIPO_CONTEXTO type);
+Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *Contexto, Folha *acoes, Plano *next);
+Agente *novoAgente(char name[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *next);
+void eval(Agente *agentes);
+void agenteASL(Agente *agentes);
+void printContexto(FILE *asl_file, Contexto *Contexto);
+void printAcoes(FILE *asl_file, Folha *acoes);
+void* liberaArvore(Agente *agente);
+void* liberaLista(Folha *lista);
+void* liberaPlanos(Plano *planos);
+void* liberaAgentes(Agente *agente);
 
 #endif

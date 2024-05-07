@@ -1,71 +1,71 @@
-#include "ast.h"
+#include "arvore.h"
 
-Leaf *new_leaf(char name[], Leaf *next)
+Folha *novaFolha(char nome[], Folha *next)
 {
-    Leaf *tmp = (Leaf *)malloc(sizeof(Leaf));
+    Folha *tmp = (Folha *)malloc(sizeof(Folha));
     if (!tmp)
     {
-        printf("Couldn't allocate leaf %s at %i.\n", name, yylineno);
+        printf("Nao foi possivel alocar folha %s em %i.\n", nome, yylineno);
         exit(EXIT_FAILURE);
     }
-    strncpy(tmp->leaf_name, name, NAME_SIZE);
+    strncpy(tmp->nome_folha, nome, TAMANHO_NOME);
     tmp->next = next;
     return tmp;
 }
 
-Context *new_context(char first[], char second[], CONTEXT_TYPE type)
+Contexto *novoContexto(char first[], char second[], CONTEXTP_TIPO type)
 {
-    Context *tmp = (Context *)malloc(sizeof(Context));
+    Contexto *tmp = (Contexto *)malloc(sizeof(Contexto));
     if (!tmp)
     {
-        printf("Couldn't allocate context at %i.\n", yylineno);
+        printf("Nao foi pssivel alocar contexto %i.\n", yylineno);
         exit(EXIT_FAILURE);
     }
-    strncpy(tmp->first, first, NAME_SIZE);
+    strncpy(tmp->first, first, TAMANHO_NOME);
     if (second)
     {
-        strncpy(tmp->second, second, NAME_SIZE);
+        strncpy(tmp->second, second, TAMANHO_NOME);
     }
     tmp->type = type;
     return tmp;
 }
 
-Plan *new_plan(char plan_name[], char trigger_name[], Context *context, Leaf *actions, Plan *next)
+Plano *novoPlanoo(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *next)
 {
-    Plan *tmp = (Plan *)malloc(sizeof(Plan));
+    Plano *tmp = (Plano *)malloc(sizeof(Plano));
     if (!tmp)
     {
-        printf("Couldn't allocate plan %s at %i.\n", plan_name, yylineno);
+        printf("Nao foi pssivel alocar plano %s em %i.\n", nome_plano, yylineno);
         exit(EXIT_FAILURE);
     }
-    strncpy(tmp->plan_name, plan_name, NAME_SIZE);
-    strncpy(tmp->trigger_name, trigger_name, NAME_SIZE);
-    tmp->context = context;
-    tmp->actions = actions;
+    strncpy(tmp->nome_plano, nome_plano, TAMANHO_NOME);
+    strncpy(tmp->condicao_nome, condicao_nome, TAMANHO_NOME);
+    tmp->contexto = contexto;
+    tmp->acoes = acoes;
     tmp->next = next;
     return tmp;
 }
 
-Agent *new_agent(char name[], Leaf *beliefs, Leaf *goals, Plan *plans, Agent *next)
+Agente *novoAgente(char nome[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *next)
 {
-    Agent *tmp = (Agent *)malloc(sizeof(Agent));
+    Agente *tmp = (Agente *)malloc(sizeof(Agente));
     if (!tmp)
     {
-        printf("Couldn't allocate agent %s at %i.\n", name, yylineno);
+        printf("Couldn't allocate agent %s at %i.\n", nome, yylineno);
         exit(EXIT_FAILURE);
     }
-    strncpy(tmp->agent_name, name, NAME_SIZE);
-    tmp->beliefs = beliefs;
-    tmp->goals = goals;
-    tmp->plans = plans;
+    strncpy(tmp->nome_agente, nome, TAMANHO_NOME);
+    tmp->crencas = crencas;
+    tmp->objetivos = objetivos;
+    tmp->planos = planos;
     tmp->next = next;
     return tmp;
 }
 
-void eval(Agent *agent)
+void eval(Agente *agente)
 {
     fclose(yyin);
-    if (!agent)
+    if (!agente)
     {
         // unreachable
         printf("Not valid agent.");
@@ -79,121 +79,121 @@ void eval(Agent *agent)
     }
     fprintf(jason_file, "MAS cc64a {");
     fprintf(jason_file, "\n\tagents: ");
-    Agent *agent_tmp = agent;
-    for (; agent; agent = agent->next)
+    Agente *agente_temporario = agente;
+    for (; agente; agente = agente->next)
     {
-        fprintf(jason_file, "%s; ", agent->agent_name);
-        agent_to_asl(agent);
-        free_ast(agent);
+        fprintf(jason_file, "%s; ", agent->nome_agente);
+        agenteASL(agente);
+        liberaArvore(agente);
     }
-    free_agents(agent_tmp);
+    liberaAgentes(agente_temporario);
     fprintf(jason_file, "\n}");
     fclose(jason_file);
 }
 
-void agent_to_asl(Agent *agent)
+void agenteASL(Agente *agente)
 {
     char buffer[64];
     char jason_path[] = "./jason/";
-    int string_len = strlen(jason_path) + NAME_SIZE + strlen(".asl");
-    snprintf(buffer, string_len, "%s%s.asl", jason_path, agent->agent_name);
+    int string_len = strlen(jason_path) + TAMANHO_NOME + strlen(".asl");
+    snprintf(buffer, string_len, "%s%s.asl", jason_path, agente->nome_agente);
     FILE *asl_file = fopen(buffer, "w");
     if (!asl_file)
     {
-        printf("Could not open %s asl file", agent->agent_name);
+        printf("Nao foi possivel abrir o arquivo asl %s", agente->nome_agente);
         exit(EXIT_FAILURE);
     }
-    for (Leaf *beliefs = agent->beliefs; beliefs; beliefs = beliefs->next)
+    for (Folha *crencas = agente->crencas; crencas; crencas = crencas->next)
     {
-        fprintf(asl_file, "%s.\n", beliefs->leaf_name);
+        fprintf(asl_file, "%s.\n", crencas->nome_folha);
     }
     fprintf(asl_file, "\n");
-    for (Leaf *goals = agent->goals; goals; goals = goals->next)
+    for (Folha *objetivos = agente->objetivos; objetivos; objetivos = objetivos->next)
     {
-        fprintf(asl_file, "!%s.\n", goals->leaf_name);
+        fprintf(asl_file, "!%s.\n", objetivos->nome_folha);
     }
     fprintf(asl_file, "\n");
-    for (Plan *plans = agent->plans; plans; plans = plans->next)
+    for (Plano *planos = agente->planos; planos; planos = planos->next)
     {
-        fprintf(asl_file, "+!%s: ", plans->trigger_name);
-        print_context(asl_file, plans->context);
-        print_actions(asl_file, plans->actions);
+        fprintf(asl_file, "+!%s: ", planos->condicao_nome);
+        printContexto(asl_file, planos->contexto);
+        printAcoes(asl_file, planos->acoes);
     }
     fclose(asl_file);
 }
 
-void print_context(FILE *asl_file, Context *context)
+void printContexto(FILE *asl_file, Contexto *contexto)
 {
-    switch (context->type)
+    switch (Contexto->type)
     {
-    case _AND:
-        fprintf(asl_file, "%s & %s\n", context->first, context->second);
+    case E:
+        fprintf(asl_file, "%s & %s\n", contexto->first, contexto->second);
         break;
-    case _OR:
-        fprintf(asl_file, "%s | %s\n", context->first, context->second);
+    case OU:
+        fprintf(asl_file, "%s | %s\n", contexto->first, contexto->second);
         break;
-    case _NOT:
-        fprintf(asl_file, "not %s\n", context->first);
+    case NAO:
+        fprintf(asl_file, "not %s\n", contexto->first);
         break;
-    case _NAME:
-        fprintf(asl_file, "%s\n", context->first);
+    case NOME:
+        fprintf(asl_file, "%s\n", contexto->first);
         break;
     default:
-        printf("bad context type"); // unreachable
+        printf("Contexto nao identificado"); 
         exit(EXIT_FAILURE);
         break;
     }
 }
 
-void print_actions(FILE *asl_file, Leaf *actions)
+void printAcoes(FILE *asl_file, Folha *acoes)
 {
     fprintf(asl_file, "\t<- ");
-    for (; actions->next; actions = actions->next)
+    for (; acoes->next; acoes = acoes->next)
     {
-        fprintf(asl_file, "\t%s;\n", actions->leaf_name);
+        fprintf(asl_file, "\t%s;\n", acoes->nome_folha);
     }
-    fprintf(asl_file, "\t%s.\n\n", actions->leaf_name);
+    fprintf(asl_file, "\t%s.\n\n", acoes->nome_folha);
 }
 
-void *free_ast(Agent *agent)
+void *liberaArvore(Agente *agente)
 {
-    if (!agent)
+    if (!agente)
         return NULL;
-    agent->beliefs = free_list(agent->beliefs);
-    agent->goals = free_list(agent->goals);
-    agent->plans = free_plans(agent->plans);
+    agente->crencas = freeLista(agente->crencas);
+    agente->objetivos = freeLista(agente->objetivos);
+    agente->planos = freePlanoos(agente->planos);
     return NULL;
 }
 
-void *free_list(Leaf *list)
+void *freeLista(Folha *lista)
 {
-    if (!list)
+    if (!lista)
         return NULL;
-    if (list->next)
-        list->next = free_list(list->next);
-    free(list);
+    if (lista->next)
+        lista->next = freeLista(lista->next);
+    free(lista);
     return NULL;
 }
 
-void *free_plans(Plan *plans)
+void *freePlanoos(Plano *planos)
 {
-    if (!plans)
+    if (!planos)
         return NULL;
-    if (plans->next)
-        plans->next = free_plans(plans->next);
-    plans->actions = free_list(plans->actions);
-    free(plans->context);
-    free(plans);
+    if (planos->next)
+        planos->next = freePlanoos(planos->next);
+    planos->acoes = freeLista(planos->acoes);
+    free(planos->Contexto);
+    free(planos);
     return NULL;
 }
 
-void *free_agents(Agent *agent)
+void *liberaAgentes(Agente *agente)
 {
-    if (!agent)
+    if (!agente)
         return NULL;
-    if (agent->next)
-        agent->next = (agent->next);
-    free(agent);
+    if (agente->next)
+        agente->next = (agente->next);
+    free(agente);
     return NULL;
 }
 
