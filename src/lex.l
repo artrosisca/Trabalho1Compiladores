@@ -13,14 +13,15 @@ LETRA           [a-zA-Z]
 NOME            {LETRA}({LETRA})?*
 AGENTE          "#"{NOME}
 CRENCAS         "crencas: "
-objetivos       "objetivos: "
+OBJETIVOS       "objetivos: "
 PLANOS          "planos: "
 
 %%
-{AGENTE}           { sscanf(yytext + 1, "%s", yylval.s); return AGENTE; }
+{AGENTE}               { sscanf(yytext + 1, "%s", yylval.s); return AGENTE; }
 {CRENCAS}              { return CRENCAS; }
 {OBJETIVOS}            { return OBJETIVOS; }
 {PLANOS}               { return PLANOS; }
+"%"                    { return PORCENTAGEM; }
 "{"                    { return ABRE_CHAVE; }
 "}"                    { return FECHA_CHAVE; }
 ";"                    { return PONTO_VIRGULA; }
