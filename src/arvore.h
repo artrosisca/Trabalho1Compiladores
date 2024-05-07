@@ -57,11 +57,11 @@ typedef struct Agente
 
 Folha *novaFolha(char name[], Folha *next);
 Contexto *novoContexto(char first[], char second[], TIPO_CONTEXTO type);
-Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *Contexto, Folha *acoes, Plano *next);
+Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *next);
 Agente *novoAgente(char name[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *next);
 void eval(Agente *agentes);
 void agenteASL(Agente *agentes);
-void printContexto(FILE *asl_file, Contexto *Contexto);
+void printContexto(FILE *asl_file, Contexto *contexto);
 void printAcoes(FILE *asl_file, Folha *acoes);
 void* liberaArvore(Agente *agente);
 void* liberaLista(Folha *lista);

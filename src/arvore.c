@@ -35,7 +35,7 @@ Plano *novoPlanoo(char nome_plano[], char condicao_nome[], Contexto *contexto, F
     Plano *tmp = (Plano *)malloc(sizeof(Plano));
     if (!tmp)
     {
-        printf("Nao foi pssivel alocar plano %s em %i.\n", nome_plano, yylineno);
+        printf("Nao foi pssivel alocar o plano %s em %i.\n", nome_plano, yylineno);
         exit(EXIT_FAILURE);
     }
     strncpy(tmp->nome_plano, nome_plano, TAMANHO_NOME);
@@ -51,7 +51,7 @@ Agente *novoAgente(char nome[], Folha *crencas, Folha *objetivos, Plano *planos,
     Agente *tmp = (Agente *)malloc(sizeof(Agente));
     if (!tmp)
     {
-        printf("Couldn't allocate agent %s at %i.\n", nome, yylineno);
+        printf("Nao foi possivel alocar o agente %s em %i.\n", nome, yylineno);
         exit(EXIT_FAILURE);
     }
     strncpy(tmp->nome_agente, nome, TAMANHO_NOME);
@@ -67,18 +67,17 @@ void eval(Agente *agente)
     fclose(yyin);
     if (!agente)
     {
-        // unreachable
-        printf("Not valid agent.");
+        printf("Agente nao valido.");
         exit(EXIT_FAILURE);
     }
     FILE *jason_file = fopen("./jason/main.mas2j", "w");
     if (!jason_file)
     {
-        printf("Could not open mas2j file");
+        printf("Nao foi possivel abrir o arquivo mas2j");
         exit(EXIT_FAILURE);
     }
     fprintf(jason_file, "MAS cc64a {");
-    fprintf(jason_file, "\n\tagents: ");
+    fprintf(jason_file, "\n\tagentes: ");
     Agente *agente_temporario = agente;
     for (; agente; agente = agente->next)
     {
@@ -133,7 +132,7 @@ void printContexto(FILE *asl_file, Contexto *contexto)
         fprintf(asl_file, "%s | %s\n", contexto->first, contexto->second);
         break;
     case _NAO:
-        fprintf(asl_file, "not %s\n", contexto->first);
+        fprintf(asl_file, "nao %s\n", contexto->first);
         break;
     case _NOME:
         fprintf(asl_file, "%s\n", contexto->first);
@@ -175,13 +174,13 @@ void *liberaLista(Folha *lista)
     return NULL;
 }
 
-void *freePlanoos(Plano *planos)
+void *liberaPlanos(Plano *planos)
 {
     if (!planos)
         return NULL;
     if (planos->next)
-        planos->next = freePlanoos(planos->next);
-    planos->acoes = freeLista(planos->acoes);
+        planos->next = liberaPlanos(planos->next);
+    planos->acoes = liberaPlanos(planos->acoes);
     free(planos->contexto);
     free(planos);
     return NULL;
@@ -201,13 +200,13 @@ int main(int argc, char **argv)
 {
     if (argc < 2)
     {
-        printf("Usage ./cc64a <FILENAME>");
+        printf("Usado ./cc64a <FILENAME>");
         exit(EXIT_FAILURE);
     }
     yyin = fopen(argv[1], "r");
     if (!yyin)
     {
-        printf("Bad nag file");
+        printf("Arquivo nag nao encontrado");
         exit(EXIT_FAILURE);
     }
     yyparse();
