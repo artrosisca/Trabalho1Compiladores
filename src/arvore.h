@@ -12,7 +12,7 @@ int yyparse(); // Declaração da função gerada pelo Bison para iniciar a aná
 extern int yylineno; // Declaração da variável global mantida pelo Flex para rastrear o número da linha atual
 extern FILE *yyin; // Declaração da variável global para armazenar o ponteiro para o arquivo de entrada
 
-#define TAMANHO_NOME 33 // Define o tamanho máximo para o nome
+#define TAMANHO_NOME 50 // Define o tamanho máximo para o nome
 
 // Declaração de uma enumeração para os tipos de contexto
 typedef enum

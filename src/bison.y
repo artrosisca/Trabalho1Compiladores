@@ -3,7 +3,7 @@
 %}
 
 %union {
-    char s[33];
+    char s[50];
     struct Folha *l;
     struct Contexto *e;
     struct Plano *p;
