@@ -5,7 +5,7 @@
 #include <string.h> // Inclui o cabeçalho da biblioteca para manipulação de strings
 #include <stdlib.h> // Inclui o cabeçalho da biblioteca padrão de alocação de memória
 
-// bison/yacc and flex/lex related declarations
+// declaracoes bison e flex
 int yyerror(const char *s, ...); // Declaração da função de erro do analisador sintático gerado pelo Bison
 int yylex(); // Declaração da função gerada pelo Flex para retornar o próximo token
 int yyparse(); // Declaração da função gerada pelo Bison para iniciar a análise sintática
