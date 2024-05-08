@@ -270,5 +270,3 @@ void *liberaAgentes(Agente *agente)
     free(agente);
     return NULL;
 }
-
-

@@ -58,6 +58,7 @@ typedef struct Agente
     struct Agente *next; // Ponteiro para o próximo agente
 } Agente;
 
+// Protótipos das funções para manipulação da árvore
 Folha *novaFolha(char name[], Folha *next);
 Contexto *novoContexto(char primeiro[], char segundo[], TIPO_CONTEXTO type);
 Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *next);
