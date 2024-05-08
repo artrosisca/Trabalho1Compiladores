@@ -61,8 +61,8 @@ Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Fo
 Agente *novoAgente(char name[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *next);
 void eval(Agente *agentes);
 void agenteASL(Agente *agentes);
-void printContexto(FILE *asl_file, Contexto *contexto);
-void printAcoes(FILE *asl_file, Folha *acoes);
+void printContexto(FILE *arquivo_asl, Contexto *contexto);
+void printAcoes(FILE *arquivo_asl, Folha *acoes);
 void* liberaArvore(Agente *agente);
 void* liberaLista(Folha *lista);
 void* liberaPlanos(Plano *planos);

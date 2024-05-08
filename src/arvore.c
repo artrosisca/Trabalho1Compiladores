@@ -122,8 +122,8 @@ void agenteASL(Agente *agente)
     int string_len = strlen(jason_path) + TAMANHO_NOME + strlen(".asl");
     snprintf(buffer, string_len, "%s%s.asl", jason_path, agente->nome_agente);
     // Abre o arquivo .asl correspondente ao agente no modo de escrita.
-    FILE *asl_file = fopen(buffer, "w");
-    if (!asl_file)
+    FILE *arquivo_asl = fopen(buffer, "w");
+    if (!arquivo_asl)
     {
         printf("Não foi possível abrir o arquivo .asl para o agente %s", agente->nome_agente);
         exit(EXIT_FAILURE);
@@ -131,44 +131,44 @@ void agenteASL(Agente *agente)
     // Escreve as crenças do agente no arquivo .asl.
     for (Folha *crencas = agente->crencas; crencas; crencas = crencas->next)
     {
-        fprintf(asl_file, "%s.\n", crencas->nome_folha);
+        fprintf(arquivo_asl, "%s.\n", crencas->nome_folha);
     }
-    fprintf(asl_file, "\n");
+    fprintf(arquivo_asl, "\n");
     // Escreve os objetivos do agente no arquivo .asl.
     for (Folha *objetivos = agente->objetivos; objetivos; objetivos = objetivos->next)
     {
-        fprintf(asl_file, "!%s.\n", objetivos->nome_folha);
+        fprintf(arquivo_asl, "!%s.\n", objetivos->nome_folha);
     }
-    fprintf(asl_file, "\n");
+    fprintf(arquivo_asl, "\n");
     // Escreve os planos do agente no arquivo .asl.
     for (Plano *planos = agente->planos; planos; planos = planos->next)
     {
-        fprintf(asl_file, "+!%s: ", planos->condicao_nome);
+        fprintf(arquivo_asl, "+!%s: ", planos->condicao_nome);
         // Escreve o contexto do plano no arquivo .asl.
-        printContexto(asl_file, planos->contexto);
+        printContexto(arquivo_asl, planos->contexto);
         // Escreve as ações do plano no arquivo .asl.
-        printAcoes(asl_file, planos->acoes);
+        printAcoes(arquivo_asl, planos->acoes);
     }
     // Fecha o arquivo .asl.
-    fclose(asl_file);
+    fclose(arquivo_asl);
 }
 
-void printContexto(FILE *asl_file, Contexto *contexto)
+void printContexto(FILE *arquivo_asl, Contexto *contexto)
 {
     // Switch para imprimir o contexto com base no tipo.
     switch (contexto->type)
     {
     case _E:
-        fprintf(asl_file, "%s & %s\n", contexto->first, contexto->second);
+        fprintf(arquivo_asl, "%s & %s\n", contexto->first, contexto->second);
         break;
     case _OU:
-        fprintf(asl_file, "%s | %s\n", contexto->first, contexto->second);
+        fprintf(arquivo_asl, "%s | %s\n", contexto->first, contexto->second);
         break;
     case _NAO:
-        fprintf(asl_file, "não %s\n", contexto->first);
+        fprintf(arquivo_asl, "não %s\n", contexto->first);
         break;
     case _NOME:
-        fprintf(asl_file, "%s\n", contexto->first);
+        fprintf(arquivo_asl, "%s\n", contexto->first);
         break;
     default:
         printf("Contexto não identificado");
@@ -177,15 +177,15 @@ void printContexto(FILE *asl_file, Contexto *contexto)
     }
 }
 
-void printAcoes(FILE *asl_file, Folha *acoes)
+void printAcoes(FILE *arquivo_asl, Folha *acoes)
 {
     // Escreve as ações no arquivo .asl.
-    fprintf(asl_file, "\t<- ");
+    fprintf(arquivo_asl, "\t<- ");
     for (; acoes->next; acoes = acoes->next)
     {
-        fprintf(asl_file, "\t%s;\n", acoes->nome_folha);
+        fprintf(arquivo_asl, "\t%s;\n", acoes->nome_folha);
     }
-    fprintf(asl_file, "\t%s.\n\n", acoes->nome_folha);
+    fprintf(arquivo_asl, "\t%s.\n\n", acoes->nome_folha);
 }
 
 // Função para liberar a memória alocada para a árvore.
