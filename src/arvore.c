@@ -76,7 +76,7 @@ void eval(Agente *agente)
         printf("Nao foi possivel abrir o arquivo mas2j");
         exit(EXIT_FAILURE);
     }
-    fprintf(jason_file, "MAS cc64a {");
+    fprintf(jason_file, "MAS trabalho {");
     fprintf(jason_file, "\n\tagentes: ");
     Agente *agente_temporario = agente;
     for (; agente; agente = agente->next)
