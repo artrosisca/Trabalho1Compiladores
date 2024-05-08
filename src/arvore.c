@@ -1,5 +1,39 @@
 #include "arvore.h"// Inclui o arquivo de cabeçalho arvore.h, que contém as definições de structs e protótipos de funções.
 
+void agenteASL(Agente *agentes);
+void printContexto(FILE *arquivo_asl, Contexto *contexto);
+void printAcoes(FILE *arquivo_asl, Folha *acoes);
+void* liberaArvore(Agente *agente);
+void* liberaLista(Folha *lista);
+void* liberaPlanos(Plano *planos);
+void* liberaAgentes(Agente *agente);
+
+// Função principal que lê o arquivo de entrada e inicia o parser.
+int main(int argc, char **argv)
+{
+    // Verifica se o nome do arquivo de entrada foi passado como argumento.
+    if (argc < 2)
+    {
+        printf("Usagem: ./trab <FILENAME> (no caso, teste.nag)");
+        exit(EXIT_FAILURE);
+    }
+    // Abre o arquivo de entrada.
+    yyin = fopen(argv[1], "r");
+    if (!yyin)
+    {
+        printf("Arquivo nag nao encontrado");
+        exit(EXIT_FAILURE);
+    }
+    // Chama o parser.
+    yyparse();
+}
+
+// Função de erro do parser.
+int yyerror(char const *, ...)
+{
+    return 0;
+}
+
 // Função para criar uma nova folha na árvore.
 Folha *novaFolha(char nome[], Folha *next)
 {
@@ -236,28 +270,4 @@ void *liberaAgentes(Agente *agente)
     return NULL;
 }
 
-// Função principal que lê o arquivo de entrada e inicia o parser.
-int main(int argc, char **argv)
-{
-    // Verifica se o nome do arquivo de entrada foi passado como argumento.
-    if (argc < 2)
-    {
-        printf("Usagem: ./trab <FILENAME> (no caso, teste.nag)");
-        exit(EXIT_FAILURE);
-    }
-    // Abre o arquivo de entrada.
-    yyin = fopen(argv[1], "r");
-    if (!yyin)
-    {
-        printf("Arquivo nag nao encontrado");
-        exit(EXIT_FAILURE);
-    }
-    // Chama o parser.
-    yyparse();
-}
 
-// Função de erro do parser.
-int yyerror(char const *, ...)
-{
-    return 0;
-}
