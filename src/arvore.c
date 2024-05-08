@@ -200,7 +200,7 @@ int main(int argc, char **argv)
 {
     if (argc < 2)
     {
-        printf("Usagem: ./cc64a <FILENAME>");
+        printf("Usagem: ./trab <FILENAME> (no caso, teste.nag)");
         exit(EXIT_FAILURE);
     }
     yyin = fopen(argv[1], "r");
