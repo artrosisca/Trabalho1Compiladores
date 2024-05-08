@@ -1,5 +1,6 @@
 #include "arvore.h"// Inclui o arquivo de cabeçalho arvore.h, que contém as definições de structs e protótipos de funções.
 
+// Protótipos das funções para manipulação da árvore
 void agenteASL(Agente *agentes);
 void printContexto(FILE *arquivo_asl, Contexto *contexto);
 void printAcoes(FILE *arquivo_asl, Folha *acoes);
@@ -51,7 +52,7 @@ Folha *novaFolha(char nome[], Folha *next)
 }
 
 // Função para criar um novo contexto.
-Contexto *novoContexto(char first[], char second[], TIPO_CONTEXTO type)
+Contexto *novoContexto(char primeiro[], char segundo[], TIPO_CONTEXTO type)
 {
     // Aloca memória para um novo contexto.
     Contexto *tmp = (Contexto *)malloc(sizeof(Contexto));
@@ -61,10 +62,10 @@ Contexto *novoContexto(char first[], char second[], TIPO_CONTEXTO type)
         exit(EXIT_FAILURE);
     }
     // Copia os valores para o contexto.
-    strncpy(tmp->first, first, TAMANHO_NOME);
-    if (second)
+    strncpy(tmp->primeiro, primeiro, TAMANHO_NOME);
+    if (segundo)
     {
-        strncpy(tmp->second, second, TAMANHO_NOME);
+        strncpy(tmp->segundo, segundo, TAMANHO_NOME);
     }
     tmp->type = type; // Define o tipo do contexto.
     return tmp; // Retorna o novo contexto.
@@ -193,16 +194,16 @@ void printContexto(FILE *arquivo_asl, Contexto *contexto)
     switch (contexto->type)
     {
     case _E:
-        fprintf(arquivo_asl, "%s & %s\n", contexto->first, contexto->second);
+        fprintf(arquivo_asl, "%s & %s\n", contexto->primeiro, contexto->segundo);
         break;
     case _OU:
-        fprintf(arquivo_asl, "%s | %s\n", contexto->first, contexto->second);
+        fprintf(arquivo_asl, "%s | %s\n", contexto->primeiro, contexto->segundo);
         break;
     case _NAO:
-        fprintf(arquivo_asl, "não %s\n", contexto->first);
+        fprintf(arquivo_asl, "não %s\n", contexto->primeiro);
         break;
     case _NOME:
-        fprintf(arquivo_asl, "%s\n", contexto->first);
+        fprintf(arquivo_asl, "%s\n", contexto->primeiro);
         break;
     default:
         printf("Contexto não identificado");

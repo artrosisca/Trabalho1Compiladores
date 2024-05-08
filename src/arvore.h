@@ -1,64 +1,67 @@
-#ifndef AST_CC65A_H //Se já estiver definido, significa que o arquivo já foi incluído e o pré-processador ignorará o conteúdo do arquivo até encontrar #endif.
-#define AST_CC65A_H
+#ifndef AST_CC65A_H // Verifica se o arquivo de cabeçalho AST_CC65A_H ainda não foi incluído
+#define AST_CC65A_H // Define o arquivo de cabeçalho AST_CC65A_H para evitar inclusões múltiplas
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <stdio.h> // Inclui o cabeçalho da biblioteca de entrada e saída padrão
+#include <string.h> // Inclui o cabeçalho da biblioteca para manipulação de strings
+#include <stdlib.h> // Inclui o cabeçalho da biblioteca padrão de alocação de memória
 
 // bison/yacc and flex/lex related declarations
-int yyerror(const char *s, ...);    /*Esta função é chamada quando ocorre um erro de análise durante o processamento do arquivo de entrada. */
-int yylex();                        /*Esta função é gerada pelo Flex e é responsável por retornar o próximo token do arquivo de entrada. */
-int yyparse();                      /*Esta função é gerada pelo Bison e é responsável por iniciar o processo de análise sintática.*/
-extern int yylineno;                /*Esta variável global é mantida pelo Flex e é usada para rastrear o número da linha atual no arquivo de entrada.*/
-extern FILE *yyin;                  /*Esta variável global é usada para armazenar o ponteiro para o arquivo de entrada que está sendo analisado.*/
-extern int yylineno;
-extern FILE *yyin; 
+int yyerror(const char *s, ...); // Declaração da função de erro do analisador sintático gerado pelo Bison
+int yylex(); // Declaração da função gerada pelo Flex para retornar o próximo token
+int yyparse(); // Declaração da função gerada pelo Bison para iniciar a análise sintática
+extern int yylineno; // Declaração da variável global mantida pelo Flex para rastrear o número da linha atual
+extern FILE *yyin; // Declaração da variável global para armazenar o ponteiro para o arquivo de entrada
 
-#define TAMANHO_NOME 33
+#define TAMANHO_NOME 33 // Define o tamanho máximo para o nome
 
+// Declaração de uma enumeração para os tipos de contexto
 typedef enum
 {
-    _E,
-    _OU,
-    _NAO,
-    _NOME,
+    _E, // Conjunção
+    _OU, // Disjunção
+    _NAO, // Negação
+    _NOME, // Nome
 } TIPO_CONTEXTO;
 
+// Declaração da estrutura para representar uma folha na árvore
 typedef struct Folha
 {
-    char nome_folha[TAMANHO_NOME];
-    struct Folha *next;
+    char nome_folha[TAMANHO_NOME]; // Nome da folha
+    struct Folha *next; // Ponteiro para a próxima folha
 } Folha;
 
+// Declaração da estrutura para representar um contexto
 typedef struct Contexto
 {
-    char first[TAMANHO_NOME];
-    char second[TAMANHO_NOME];
-    TIPO_CONTEXTO type;
+    char primeiro[TAMANHO_NOME]; // Primeiro elemento do contexto
+    char segundo[TAMANHO_NOME]; // Segundo elemento do contexto
+    TIPO_CONTEXTO type; // Tipo de contexto
 } Contexto;
 
+// Declaração da estrutura para representar um plano
 typedef struct Plano
 {
-    char nome_plano[TAMANHO_NOME];
-    char condicao_nome[TAMANHO_NOME];
-    Contexto *contexto;
-    Folha *acoes;
-    struct Plano *next;
+    char nome_plano[TAMANHO_NOME]; // Nome do plano
+    char condicao_nome[TAMANHO_NOME]; // Nome da condição
+    Contexto *contexto; // Contexto do plano
+    Folha *acoes; // Ações do plano
+    struct Plano *next; // Ponteiro para o próximo plano
 } Plano;
 
+// Declaração da estrutura para representar um agente
 typedef struct Agente
 {
-    char nome_agente[TAMANHO_NOME];
-    Folha *crencas;
-    Folha *objetivos;
-    Plano *planos;
-    struct Agente *next;
+    char nome_agente[TAMANHO_NOME]; // Nome do agente
+    Folha *crencas; // Lista de crenças do agente
+    Folha *objetivos; // Lista de objetivos do agente
+    Plano *planos; // Lista de planos do agente
+    struct Agente *next; // Ponteiro para o próximo agente
 } Agente;
 
 Folha *novaFolha(char name[], Folha *next);
-Contexto *novoContexto(char first[], char second[], TIPO_CONTEXTO type);
+Contexto *novoContexto(char primeiro[], char segundo[], TIPO_CONTEXTO type);
 Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *next);
 Agente *novoAgente(char name[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *next);
 void eval(Agente *agentes);
 
-#endif
+#endif // Finaliza a verificação da inclusão múltipla do arquivo de cabeçalho
