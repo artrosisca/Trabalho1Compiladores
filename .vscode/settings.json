@@ -2,5 +2,6 @@
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
         "*.y": "c"
-    }
+    },
+    "cmake.sourceDirectory": "/home/arthur/GIT/Flex-Bison/Trabalho_1_Compiladores/build"
 }
