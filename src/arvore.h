@@ -1,5 +1,5 @@
-#ifndef AST_CC65A_H // Verifica se o arquivo de cabeçalho AST_CC65A_H ainda não foi incluído
-#define AST_CC65A_H // Define o arquivo de cabeçalho AST_CC65A_H para evitar inclusões múltiplas
+#ifndef HEADER // Verifica se o arquivo de cabeçalho HEADER ainda não foi incluído
+#define HEADER // Define o arquivo de cabeçalho HEADER para evitar inclusões múltiplas
 
 #include <stdio.h> // Inclui o cabeçalho da biblioteca de entrada e saída padrão
 #include <string.h> // Inclui o cabeçalho da biblioteca para manipulação de strings
