@@ -10,8 +10,7 @@ void* liberaPlanos(Plano *planos);
 void* liberaAgentes(Agente *agente);
 
 // Função principal que lê o arquivo de entrada e inicia o parser.
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     // Verifica se o nome do arquivo de entrada foi passado como argumento.
     if (argc < 2)
     {
@@ -30,14 +29,12 @@ int main(int argc, char **argv)
 }
 
 // Função de erro do parser.
-int yyerror(char const *, ...)
-{
+int yyerror(char const *, ...) {
     return 0;
 }
 
 // Função para criar uma nova folha na árvore.
-Folha *novaFolha(char nome[], Folha *proximo)
-{
+Folha *novaFolha(char nome[], Folha *proximo) {
     // Aloca memória para uma nova folha.
     Folha *tmp = (Folha *)malloc(sizeof(Folha));
     if (!tmp)
@@ -52,8 +49,7 @@ Folha *novaFolha(char nome[], Folha *proximo)
 }
 
 // Função para criar um novo contexto.
-Contexto *novoContexto(char primeiro[], char segundo[], TIPO_CONTEXTO type)
-{
+Contexto *novoContexto(char primeiro[], char segundo[], TIPO_CONTEXTO type) {
     // Aloca memória para um novo contexto.
     Contexto *tmp = (Contexto *)malloc(sizeof(Contexto));
     if (!tmp)
@@ -72,8 +68,7 @@ Contexto *novoContexto(char primeiro[], char segundo[], TIPO_CONTEXTO type)
 }
 
 // Função para criar um novo plano.
-Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *proximo)
-{
+Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *proximo) {
     // Aloca memória para um novo plano.
     Plano *tmp = (Plano *)malloc(sizeof(Plano));
     if (!tmp)
@@ -91,8 +86,7 @@ Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Fo
 }
 
 // Função para criar um novo agente.
-Agente *novoAgente(char nome[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *proximo)
-{
+Agente *novoAgente(char nome[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *proximo) {
     // Aloca memória para um novo agente.
     Agente *tmp = (Agente *)malloc(sizeof(Agente));
     if (!tmp)
@@ -109,8 +103,7 @@ Agente *novoAgente(char nome[], Folha *crencas, Folha *objetivos, Plano *planos,
     return tmp; // Retorna o novo agente.
 }
 
-void eval(Agente *agente)
-{
+void eval(Agente *agente) {
     // Fecha o arquivo de entrada.
     fclose(yyin);
     // Verifica se o agente é válido.
@@ -149,8 +142,7 @@ void eval(Agente *agente)
     fclose(jason_file);
 }
 
-void agenteASL(Agente *agente)
-{
+void agenteASL(Agente *agente) {
     char buffer[64];
     char jason_path[] = "./jason/";
     // Calcula o tamanho da string para o nome do arquivo .asl.
@@ -188,8 +180,7 @@ void agenteASL(Agente *agente)
     fclose(arquivo_asl);
 }
 
-void printContexto(FILE *arquivo_asl, Contexto *contexto)
-{
+void printContexto(FILE *arquivo_asl, Contexto *contexto) {
     // Switch para imprimir o contexto com base no tipo.
     switch (contexto->type)
     {
@@ -212,8 +203,7 @@ void printContexto(FILE *arquivo_asl, Contexto *contexto)
     }
 }
 
-void printAcoes(FILE *arquivo_asl, Folha *acoes)
-{
+void printAcoes(FILE *arquivo_asl, Folha *acoes) {
     // Escreve as ações no arquivo .asl.
     fprintf(arquivo_asl, "\t<- ");
     for (; acoes->proximo; acoes = acoes->proximo)
@@ -224,8 +214,7 @@ void printAcoes(FILE *arquivo_asl, Folha *acoes)
 }
 
 // Função para liberar a memória alocada para a árvore.
-void *liberaArvore(Agente *agente)
-{
+void *liberaArvore(Agente *agente) {
     if (!agente)
         return NULL;
     // Libera as listas de crenças, objetivos e planos do agente.
@@ -236,8 +225,7 @@ void *liberaArvore(Agente *agente)
 }
 
 // Função para liberar a memória alocada para uma lista de folhas.
-void *liberaLista(Folha *lista)
-{
+void *liberaLista(Folha *lista) {
     if (!lista)
         return NULL;
     if (lista->proximo)
@@ -247,8 +235,7 @@ void *liberaLista(Folha *lista)
 }
 
 // Função para liberar a memória alocada para uma lista de planos.
-void *liberaPlanos(Plano *planos)
-{
+void *liberaPlanos(Plano *planos) {
     if (!planos)
         return NULL;
     if (planos->proximo)
@@ -261,8 +248,7 @@ void *liberaPlanos(Plano *planos)
 }
 
 // Função para liberar a memória alocada para uma lista de agentes.
-void *liberaAgentes(Agente *agente)
-{
+void *liberaAgentes(Agente *agente) {
     if (!agente)
         return NULL;
     if (agente->proximo)

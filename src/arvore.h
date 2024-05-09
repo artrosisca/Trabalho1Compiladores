@@ -15,8 +15,7 @@ extern FILE *yyin; // Declaração da variável global para armazenar o ponteiro
 #define TAMANHO_NOME 50 // Define o tamanho máximo para o nome
 
 // Declaração de uma enumeração para os tipos de contexto
-typedef enum
-{
+typedef enum {
     _E, // Conjunção
     _OU, // Disjunção
     _NAO, // Negação
@@ -24,23 +23,20 @@ typedef enum
 } TIPO_CONTEXTO;
 
 // Declaração da estrutura para representar uma folha na árvore
-typedef struct Folha
-{
+typedef struct Folha {
     char nome_folha[TAMANHO_NOME]; // Nome da folha
     struct Folha *proximo; // Ponteiro para a próxima folha
 } Folha;
 
 // Declaração da estrutura para representar um contexto
-typedef struct Contexto
-{
+typedef struct Contexto {
     char primeiro[TAMANHO_NOME]; // Primeiro elemento do contexto
     char segundo[TAMANHO_NOME]; // Segundo elemento do contexto
     TIPO_CONTEXTO type; // Tipo de contexto
 } Contexto;
 
 // Declaração da estrutura para representar um plano
-typedef struct Plano
-{
+typedef struct Plano {
     char nome_plano[TAMANHO_NOME]; // Nome do plano
     char condicao_nome[TAMANHO_NOME]; // Nome da condição
     Contexto *contexto; // Contexto do plano
@@ -49,8 +45,7 @@ typedef struct Plano
 } Plano;
 
 // Declaração da estrutura para representar um agente
-typedef struct Agente
-{
+typedef struct Agente {
     char nome_agente[TAMANHO_NOME]; // Nome do agente
     Folha *crencas; // Lista de crenças do agente
     Folha *objetivos; // Lista de objetivos do agente
