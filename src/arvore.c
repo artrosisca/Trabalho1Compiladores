@@ -36,7 +36,7 @@ int yyerror(char const *, ...)
 }
 
 // Função para criar uma nova folha na árvore.
-Folha *novaFolha(char nome[], Folha *next)
+Folha *novaFolha(char nome[], Folha *proximo)
 {
     // Aloca memória para uma nova folha.
     Folha *tmp = (Folha *)malloc(sizeof(Folha));
@@ -47,7 +47,7 @@ Folha *novaFolha(char nome[], Folha *next)
     }
     // Copia o nome para a folha.
     strncpy(tmp->nome_folha, nome, TAMANHO_NOME);
-    tmp->next = next; // Define o próximo ponteiro da folha.
+    tmp->proximo = proximo; // Define o próximo ponteiro da folha.
     return tmp; // Retorna a nova folha.
 }
 
@@ -72,7 +72,7 @@ Contexto *novoContexto(char primeiro[], char segundo[], TIPO_CONTEXTO type)
 }
 
 // Função para criar um novo plano.
-Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *next)
+Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *proximo)
 {
     // Aloca memória para um novo plano.
     Plano *tmp = (Plano *)malloc(sizeof(Plano));
@@ -86,12 +86,12 @@ Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Fo
     strncpy(tmp->condicao_nome, condicao_nome, TAMANHO_NOME);
     tmp->contexto = contexto;
     tmp->acoes = acoes;
-    tmp->next = next; // Define o próximo ponteiro do plano.
+    tmp->proximo = proximo; // Define o próximo ponteiro do plano.
     return tmp; // Retorna o novo plano.
 }
 
 // Função para criar um novo agente.
-Agente *novoAgente(char nome[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *next)
+Agente *novoAgente(char nome[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *proximo)
 {
     // Aloca memória para um novo agente.
     Agente *tmp = (Agente *)malloc(sizeof(Agente));
@@ -105,7 +105,7 @@ Agente *novoAgente(char nome[], Folha *crencas, Folha *objetivos, Plano *planos,
     tmp->crencas = crencas;
     tmp->objetivos = objetivos;
     tmp->planos = planos;
-    tmp->next = next; // Define o próximo ponteiro do agente.
+    tmp->proximo = proximo; // Define o próximo ponteiro do agente.
     return tmp; // Retorna o novo agente.
 }
 
@@ -132,7 +132,7 @@ void eval(Agente *agente)
     // Salva o ponteiro inicial do agente para liberar a memória posteriormente.
     Agente *agente_temporario = agente;
     // Loop sobre todos os agentes.
-    for (; agente; agente = agente->next)
+    for (; agente; agente = agente->proximo)
     {
         // Escreve o nome do agente no arquivo .mas2j.
         fprintf(jason_file, "%s; ", agente->nome_agente);
@@ -164,19 +164,19 @@ void agenteASL(Agente *agente)
         exit(EXIT_FAILURE);
     }
     // Escreve as crenças do agente no arquivo .asl.
-    for (Folha *crencas = agente->crencas; crencas; crencas = crencas->next)
+    for (Folha *crencas = agente->crencas; crencas; crencas = crencas->proximo)
     {
         fprintf(arquivo_asl, "%s.\n", crencas->nome_folha);
     }
     fprintf(arquivo_asl, "\n");
     // Escreve os objetivos do agente no arquivo .asl.
-    for (Folha *objetivos = agente->objetivos; objetivos; objetivos = objetivos->next)
+    for (Folha *objetivos = agente->objetivos; objetivos; objetivos = objetivos->proximo)
     {
         fprintf(arquivo_asl, "!%s.\n", objetivos->nome_folha);
     }
     fprintf(arquivo_asl, "\n");
     // Escreve os planos do agente no arquivo .asl.
-    for (Plano *planos = agente->planos; planos; planos = planos->next)
+    for (Plano *planos = agente->planos; planos; planos = planos->proximo)
     {
         fprintf(arquivo_asl, "+!%s: ", planos->condicao_nome);
         // Escreve o contexto do plano no arquivo .asl.
@@ -216,7 +216,7 @@ void printAcoes(FILE *arquivo_asl, Folha *acoes)
 {
     // Escreve as ações no arquivo .asl.
     fprintf(arquivo_asl, "\t<- ");
-    for (; acoes->next; acoes = acoes->next)
+    for (; acoes->proximo; acoes = acoes->proximo)
     {
         fprintf(arquivo_asl, "\t%s;\n", acoes->nome_folha);
     }
@@ -240,8 +240,8 @@ void *liberaLista(Folha *lista)
 {
     if (!lista)
         return NULL;
-    if (lista->next)
-        lista->next = liberaLista(lista->next);
+    if (lista->proximo)
+        lista->proximo = liberaLista(lista->proximo);
     free(lista);
     return NULL;
 }
@@ -251,8 +251,8 @@ void *liberaPlanos(Plano *planos)
 {
     if (!planos)
         return NULL;
-    if (planos->next)
-        planos->next = liberaPlanos(planos->next);
+    if (planos->proximo)
+        planos->proximo = liberaPlanos(planos->proximo);
     // Libera as ações do plano.
     planos->acoes = liberaLista(planos->acoes);
     free(planos->contexto);
@@ -265,8 +265,8 @@ void *liberaAgentes(Agente *agente)
 {
     if (!agente)
         return NULL;
-    if (agente->next)
-        agente->next = (agente->next);
+    if (agente->proximo)
+        agente->proximo = (agente->proximo);
     free(agente);
     return NULL;
 }

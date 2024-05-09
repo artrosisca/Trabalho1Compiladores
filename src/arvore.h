@@ -27,7 +27,7 @@ typedef enum
 typedef struct Folha
 {
     char nome_folha[TAMANHO_NOME]; // Nome da folha
-    struct Folha *next; // Ponteiro para a próxima folha
+    struct Folha *proximo; // Ponteiro para a próxima folha
 } Folha;
 
 // Declaração da estrutura para representar um contexto
@@ -45,7 +45,7 @@ typedef struct Plano
     char condicao_nome[TAMANHO_NOME]; // Nome da condição
     Contexto *contexto; // Contexto do plano
     Folha *acoes; // Ações do plano
-    struct Plano *next; // Ponteiro para o próximo plano
+    struct Plano *proximo; // Ponteiro para o próximo plano
 } Plano;
 
 // Declaração da estrutura para representar um agente
@@ -55,14 +55,14 @@ typedef struct Agente
     Folha *crencas; // Lista de crenças do agente
     Folha *objetivos; // Lista de objetivos do agente
     Plano *planos; // Lista de planos do agente
-    struct Agente *next; // Ponteiro para o próximo agente
+    struct Agente *proximo; // Ponteiro para o próximo agente
 } Agente;
 
 // Protótipos das funções para manipulação da árvore
-Folha *novaFolha(char name[], Folha *next);
+Folha *novaFolha(char name[], Folha *proximo);
 Contexto *novoContexto(char primeiro[], char segundo[], TIPO_CONTEXTO type);
-Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *next);
-Agente *novoAgente(char name[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *next);
+Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *proximo);
+Agente *novoAgente(char name[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *proximo);
 void eval(Agente *agentes);
 
 #endif // Finaliza a verificação da inclusão múltipla do arquivo de cabeçalho
