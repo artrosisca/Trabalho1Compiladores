@@ -1,0 +1,18 @@
+#bob crencas: { ola ; naotenhoGuardaChuva ; } 
+objetivos: { comprarGuardaChuva ; naoPegarChuva ; } 
+planos: { plano1 ( comprarGuardaChuva ; estaChovendo E naotenhoGuardaChuva ; { 
+    sair; procurarLoja; comprarGuardaChuva; } ) ; 
+plano2 ( naoPegarChuva ; NAO estaChovendo ; { 
+    sair; jogarBola ; } ) ; 
+plano3 ( naoPegarChuva ; estaChovendo E naotenhoGuardaChuva ; { 
+    ficarEmCasa; estudar; } ) ; } 
+%
+#creusa crencas: { ola ; naoTenhoUmChinelo ; } 
+objetivos: { comprarUmChinelo ; naoPisarNoBarro ; } 
+planos: { plano1 ( comprarUmChinelo ; estaChovendo E naoTenhoUmChinelo ; { 
+    sair; procurarLoja; comprarUmChinelo; } ) ; 
+plano2 ( naoPisarNoBarro ; NAO estaChovendo ; { 
+    sair; irParaPraia ; } ) ; 
+plano3 ( naoPisarNoBarro ; estaChovendo E naoTenhoUmChinelo ; { 
+    ficarEmCasa; estudar; } ) ; } 
+%
