@@ -12,15 +12,13 @@ void* liberaAgentes(Agente *agente);
 // Função principal que lê o arquivo de entrada e inicia o parser.
 int main(int argc, char **argv) {
     // Verifica se o nome do arquivo de entrada foi passado como argumento.
-    if (argc < 2)
-    {
+    if (argc < 2) {
         printf("Usagem: ./trab <FILENAME> (no caso, teste.nag)");
         exit(EXIT_FAILURE);
     }
     // Abre o arquivo de entrada.
     yyin = fopen(argv[1], "r");
-    if (!yyin)
-    {
+    if (!yyin) {
         printf("Arquivo nag nao encontrado");
         exit(EXIT_FAILURE);
     }
@@ -37,8 +35,7 @@ int yyerror(char const *, ...) {
 Folha *novaFolha(char nome[], Folha *proximo) {
     // Aloca memória para uma nova folha.
     Folha *tmp = (Folha *)malloc(sizeof(Folha));
-    if (!tmp)
-    {
+    if (!tmp) {
         printf("Nao foi possivel alocar folha %s em %i.\n", nome, yylineno);
         exit(EXIT_FAILURE);
     }
@@ -52,15 +49,13 @@ Folha *novaFolha(char nome[], Folha *proximo) {
 Contexto *novoContexto(char primeiro[], char segundo[], TIPO_CONTEXTO type) {
     // Aloca memória para um novo contexto.
     Contexto *tmp = (Contexto *)malloc(sizeof(Contexto));
-    if (!tmp)
-    {
+    if (!tmp) {
         printf("Nao foi pssivel alocar contexto %i.\n", yylineno);
         exit(EXIT_FAILURE);
     }
     // Copia os valores para o contexto.
     strncpy(tmp->primeiro, primeiro, TAMANHO_NOME);
-    if (segundo)
-    {
+    if (segundo) {
         strncpy(tmp->segundo, segundo, TAMANHO_NOME);
     }
     tmp->type = type; // Define o tipo do contexto.
@@ -71,8 +66,7 @@ Contexto *novoContexto(char primeiro[], char segundo[], TIPO_CONTEXTO type) {
 Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Folha *acoes, Plano *proximo) {
     // Aloca memória para um novo plano.
     Plano *tmp = (Plano *)malloc(sizeof(Plano));
-    if (!tmp)
-    {
+    if (!tmp) {
         printf("Nao foi pssivel alocar o plano %s em %i.\n", nome_plano, yylineno);
         exit(EXIT_FAILURE);
     }
@@ -89,8 +83,7 @@ Plano *novoPlano(char nome_plano[], char condicao_nome[], Contexto *contexto, Fo
 Agente *novoAgente(char nome[], Folha *crencas, Folha *objetivos, Plano *planos, Agente *proximo) {
     // Aloca memória para um novo agente.
     Agente *tmp = (Agente *)malloc(sizeof(Agente));
-    if (!tmp)
-    {
+    if (!tmp) {
         printf("Nao foi possivel alocar o agente %s em %i.\n", nome, yylineno);
         exit(EXIT_FAILURE);
     }
@@ -107,15 +100,13 @@ void eval(Agente *agente) {
     // Fecha o arquivo de entrada.
     fclose(yyin);
     // Verifica se o agente é válido.
-    if (!agente)
-    {
+    if (!agente) {
         printf("Agente não válido.");
         exit(EXIT_FAILURE);
     }
     // Abre o arquivo main.mas2j no modo de escrita.
     FILE *jason_file = fopen("./jason/main.mas2j", "w");
-    if (!jason_file)
-    {
+    if (!jason_file) {
         printf("Não foi possível abrir o arquivo main.mas2j");
         exit(EXIT_FAILURE);
     }
@@ -125,8 +116,7 @@ void eval(Agente *agente) {
     // Salva o ponteiro inicial do agente para liberar a memória posteriormente.
     Agente *agente_temporario = agente;
     // Loop sobre todos os agentes.
-    for (; agente; agente = agente->proximo)
-    {
+    for (; agente; agente = agente->proximo) {
         // Escreve o nome do agente no arquivo .mas2j.
         fprintf(jason_file, "%s; ", agente->nome_agente);
         // Gera o arquivo .asl correspondente ao agente.
@@ -150,26 +140,22 @@ void agenteASL(Agente *agente) {
     snprintf(buffer, string_len, "%s%s.asl", jason_path, agente->nome_agente);
     // Abre o arquivo .asl correspondente ao agente no modo de escrita.
     FILE *arquivo_asl = fopen(buffer, "w");
-    if (!arquivo_asl)
-    {
+    if (!arquivo_asl) {
         printf("Não foi possível abrir o arquivo .asl para o agente %s", agente->nome_agente);
         exit(EXIT_FAILURE);
     }
     // Escreve as crenças do agente no arquivo .asl.
-    for (Folha *crencas = agente->crencas; crencas; crencas = crencas->proximo)
-    {
+    for (Folha *crencas = agente->crencas; crencas; crencas = crencas->proximo) {
         fprintf(arquivo_asl, "%s.\n", crencas->nome_folha);
     }
     fprintf(arquivo_asl, "\n");
     // Escreve os objetivos do agente no arquivo .asl.
-    for (Folha *objetivos = agente->objetivos; objetivos; objetivos = objetivos->proximo)
-    {
+    for (Folha *objetivos = agente->objetivos; objetivos; objetivos = objetivos->proximo) {
         fprintf(arquivo_asl, "!%s.\n", objetivos->nome_folha);
     }
     fprintf(arquivo_asl, "\n");
     // Escreve os planos do agente no arquivo .asl.
-    for (Plano *planos = agente->planos; planos; planos = planos->proximo)
-    {
+    for (Plano *planos = agente->planos; planos; planos = planos->proximo) {
         fprintf(arquivo_asl, "+!%s: ", planos->condicao_nome);
         // Escreve o contexto do plano no arquivo .asl.
         printContexto(arquivo_asl, planos->contexto);
@@ -182,8 +168,7 @@ void agenteASL(Agente *agente) {
 
 void printContexto(FILE *arquivo_asl, Contexto *contexto) {
     // Switch para imprimir o contexto com base no tipo.
-    switch (contexto->type)
-    {
+    switch (contexto->type) {
     case _E:
         fprintf(arquivo_asl, "%s & %s\n", contexto->primeiro, contexto->segundo);
         break;
@@ -206,8 +191,7 @@ void printContexto(FILE *arquivo_asl, Contexto *contexto) {
 void printAcoes(FILE *arquivo_asl, Folha *acoes) {
     // Escreve as ações no arquivo .asl.
     fprintf(arquivo_asl, "\t<- ");
-    for (; acoes->proximo; acoes = acoes->proximo)
-    {
+    for (; acoes->proximo; acoes = acoes->proximo) {
         fprintf(arquivo_asl, "\t%s;\n", acoes->nome_folha);
     }
     fprintf(arquivo_asl, "\t%s.\n\n", acoes->nome_folha);
